@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Welcome, {{ username }}!</h2>
+        
+
+        <!-- File upload form -->
+        <form method="post" action="/upload" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <!-- Display the list of files -->
+        <table>
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key in keys %}
+                <tr>
+                    <td><a href="https://linkit.s3.amazonaws.com/{{ key }}">{{ key }}</a></td> 
+                    <td>
+                        <form method="post" action="/delete">
+                            <input type="hidden" name="file" value="{{ key }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
+{% endblock %}
